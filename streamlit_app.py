@@ -4,7 +4,7 @@
 import streamlit as st
 from openai import OpenAI 
 import PyPDF2
-#import io 
+import os
 
 # Show title and description.
 st.title("📄 Leytisha's HW 1 App")
