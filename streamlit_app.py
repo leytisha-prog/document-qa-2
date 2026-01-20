@@ -25,22 +25,22 @@ if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
 
-# Create an OpenAI Client
-client = OpenAI(api_key=openai_api_key)
-try:
-    client.models.list()
-    st.success("API key validated ✅")
- # Let the user upload a file via `st.file_uploader`.
-    uploaded_file = st.file_uploader(
-        "Upload a document (.txt or .pdf)", type=("txt", "pdf")
-    )
+    # Create an OpenAI Client
+    client = OpenAI(api_key=openai_api_key)
+    try:
+        client.models.list()
+        st.success("API key validated ✅")
+    # Let the user upload a file via `st.file_uploader`.
+        uploaded_file = st.file_uploader(
+            "Upload a document (.txt or .pdf)", type=("txt", "pdf")
+        )
     
-# Ask the user for a question via `st.text_area`.
-    question = st.text_area(
-        "Now ask a question about the document!",
-        placeholder="Can you give me a short summary?",
-        disabled=not uploaded_file,
-    )
+    # Ask the user for a question via `st.text_area`.
+        question = st.text_area(
+            "Now ask a question about the document!",
+            placeholder="Can you give me a short summary?",
+            disabled=not uploaded_file,
+        )
  
         if uploaded_file and question:
         # Process the uploaded file and question.
@@ -71,5 +71,5 @@ try:
             # Stream the response to the app using `st.write_stream`.
                 st.write_stream(stream)
  
-except Exception as e:
-    st.error("Invalid API Key, please try again.")
+    except Exception as e:
+        st.error("Invalid API Key, please try again.")
