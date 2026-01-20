@@ -48,7 +48,7 @@ else:
 
     # Let the user upload a file via `st.file_uploader`.
     uploaded_file = st.file_uploader(
-        "Upload a document (.txt or .pdf)", type=("txt", "md")
+        "Upload a document (.txt or .pdf)", type=("txt", "pdf")
     )
 
     # Ask the user for a question via `st.text_area`.
@@ -60,42 +60,35 @@ else:
     if uploaded_file is not None:
             
             # Get the file type
-            file_type = uploaded_file.name.split(".") [-1]
+            file_extension = uploaded_file.name.split(".") [-1]
 
             # If the file is a TXT file
-            if file_type == "txt":
-                 text = uploaded_file.read().decode("utf-8")
-                 st.subreader("Text from TXT file:")
-                 st.write(text)
+            if file_extension == "txt":
+                 document = uploaded_file.read().decode()
+            elif file_extension == 'pdf':
+                 document = read_pdf(uploaded_file)
+            else:
+                 st.error("Unsupported file type.")
+                 st.stop()
+                 
 
-            # If the file is a PDF file 
-            elif file_type == "pdf":
-                 pdf_reader = PyPDF2.PdfReader(uploaded_file)
-
-                 text = ""
-                 for page in pdf_reader.pages:
-                      text += page.extract_text()
-
-                 st.subheader("Text from PDF:")
-                 st.write(text)
-
-    #if uploaded_file and question:
+    if uploaded_file and question:
 
         # Process the uploaded file and question.
-        #document = uploaded_file.read().decode()
-        #messages = [
+        document = uploaded_file.read().decode()
+        messages = [
             {
-               # "role": "user",
-               # "content": f"Here's a document: {document} \n\n---\n\n {question}",
+                "role": "user",
+                "content": f"Here's a document: {document} \n\n---\n\n {question}",
             }
-        #]
+        ]
 
         # Generate an answer using the OpenAI API.
-        #stream = client.chat.completions.create(
-            #model="gpt-5-nano",
-            #messages=messages,
-            #stream=True,
-        #)
+        stream = client.chat.completions.create(
+             model="gpt-5-nano",
+             messages=messages,
+             stream=True,
+         )
 
         # Stream the response to the app using `st.write_stream`.
-        #st.write_stream(stream)
+        st.write_stream(stream)
