@@ -46,7 +46,7 @@ else:
             "Upload a document (.txt or .pdf)", type=("txt", "pdf")
         )
      
-     except Exception:
+    except Exception:
         st.error("Invalid API key. Please try again.", icon="❌")
 
 
