@@ -7,11 +7,11 @@ import PyPDF2
 import io
 
 def read_pdf(uploaded_file):
-     pdf_reader = PyPDF2.PdfReader(uploaded_file)
-     text = ""
-     for page in pdf_reader.pages:
-          text += page.extract_text()
-          return text
+    pdf_reader = PyPDF2.PdfReader(uploaded_file)
+    text = ""
+    for page in pdf_reader.pages:
+        text += page.extract_text()
+    return text
 
 # Show title and description.
 st.title("Leytisha's HW 1 App")
@@ -28,7 +28,8 @@ if not openai_api_key:
     st.info("Please add your OpenAI API key to continue.", icon="🗝️")
 else:
     # api_key = st.text_input("OpenAI API Key", type="password")
-      
+    client = OpenAI(api_key=openai_api_key)
+
     try:
         # Validation line (right here)
         OpenAI(api_key=openai_api_key).chat.completions.create(
@@ -40,15 +41,15 @@ else:
         st.success("API key validated ✅")
 
         # Existing code continues unchanged
-        client = OpenAI(api_key=openai_api_key)
+        
 
         uploaded_file = st.file_uploader(
             "Upload a document (.txt or .pdf)", type=("txt", "pdf")
         )
         question = st.text_area(
-        "Now ask a question about the document!",
-        placeholder="Can you give me a short summary?",
-        disabled=not uploaded_file,
+            "Now ask a question about the document!",
+            placeholder="Can you give me a short summary?",
+            disabled=not uploaded_file,
         )
         if uploaded_file and question:
             
