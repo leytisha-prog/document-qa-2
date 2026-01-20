@@ -4,7 +4,7 @@
 import streamlit as st
 from openai import OpenAI 
 import PyPDF2
-import os
+import io
 
 # Show title and description.
 st.title("Leytisha's HW 1 App")
@@ -36,7 +36,7 @@ else:
         client = OpenAI(api_key=openai_api_key)
 
         uploaded_file = st.file_uploader(
-            "Upload a document (.txt or .md)", type=("txt", "md")
+            "Upload a document (.txt or .pdf)", type=("txt", "pdf")
         )
 
     except Exception:
