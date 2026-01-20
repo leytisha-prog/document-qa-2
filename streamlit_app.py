@@ -2,12 +2,14 @@
 
 
 import streamlit as st
-from openai import OpenAI
+from openai import OpenAI 
+import PyPDF2
+#import io 
 
 # Show title and description.
 st.title("📄 Leytisha's HW 1 App")
 st.write(
-    "Upload a document below and ask a question about it – GPT will answer! "
+    "Upload a PDF or a .txt document below and ask a question about it – GPT will answer! "
     "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
 )
 
@@ -55,24 +57,45 @@ else:
         placeholder="Can you give me a short summary?",
         disabled=not uploaded_file,
     )
+    if uploaded_file is not None:
+            
+            # Get the file type
+            file_type = uploaded_file.name.split(".") [-1]
 
-    if uploaded_file and question:
+            # If the file is a TXT file
+            if file_type == "txt":
+                 text = uploaded_file.read().decode("utf-8")
+                 st.subreader("Text from TXT file:")
+                 st.write(text)
+
+            # If the file is a PDF file 
+            elif file_type == "pdf":
+                 pdf_reader = PyPDF2.PdfReader(uploaded_file)
+
+                 text = ""
+                 for page in pdf_reader.pages:
+                      text += page.extract_text()
+
+                 st.subheader("Text from PDF:")
+                 st.write(text)
+
+    #if uploaded_file and question:
 
         # Process the uploaded file and question.
-        document = uploaded_file.read().decode()
-        messages = [
+        #document = uploaded_file.read().decode()
+        #messages = [
             {
-                "role": "user",
-                "content": f"Here's a document: {document} \n\n---\n\n {question}",
+               # "role": "user",
+               # "content": f"Here's a document: {document} \n\n---\n\n {question}",
             }
-        ]
+        #]
 
         # Generate an answer using the OpenAI API.
-        stream = client.chat.completions.create(
-            model="gpt-5-nano",
-            messages=messages,
-            stream=True,
-        )
+        #stream = client.chat.completions.create(
+            #model="gpt-5-nano",
+            #messages=messages,
+            #stream=True,
+        #)
 
         # Stream the response to the app using `st.write_stream`.
-        st.write_stream(stream)
+        #st.write_stream(stream)
