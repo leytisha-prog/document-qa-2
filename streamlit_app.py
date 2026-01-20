@@ -66,7 +66,7 @@ else:
         placeholder="Can you give me a short summary?",
         disabled=not uploaded_file,
     )
-    if uploaded_file is not None:
+    if uploaded_file and question:
             
             # Get the file type
             file_extension = uploaded_file.name.split(".") [-1]
