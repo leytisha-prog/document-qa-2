@@ -16,3 +16,6 @@ st.write(
     "Upload a PDF or a TXT document below and ask a question about it – GPT will answer! "
     "To use this app, you need to provide an OpenAI API key, which you can get [here](https://platform.openai.com/account/api-keys). "
 )
+
+# Create an OpenAI Client
+client = OpenAI(api_key=openai_api_key)
