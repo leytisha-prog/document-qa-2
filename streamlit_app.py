@@ -39,8 +39,7 @@ else:
             "Upload a document (.txt or .pdf)", type=("txt", "pdf")
         )
 
-    except Exception:
-        st.error("Invalid API key. Please try again.", icon="❌")
+
     
     # Existing code -------
     # Create an OpenAI client.
@@ -89,6 +88,9 @@ else:
              messages=messages,
              stream=True,
          )
+        
+        except Exception:
+        st.error("Invalid API key. Please try again.", icon="❌")
 
         # Stream the response to the app using `st.write_stream`.
         st.write_stream(stream)
