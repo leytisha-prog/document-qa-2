@@ -49,7 +49,7 @@ else:
         "Now ask a question about the document!",
         placeholder="Can you give me a short summary?",
         disabled=not uploaded_file,
-    )
+        )
         if uploaded_file and question:
             
             # Get the file type
