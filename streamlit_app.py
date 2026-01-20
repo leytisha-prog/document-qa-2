@@ -6,6 +6,13 @@ from openai import OpenAI
 import PyPDF2
 import io
 
+def read_pdf(uploaded_file):
+     pdf_reader = PyPDF2.PdfReader(uploaded_file)
+     text = ""
+     for page in pdf_reader.pages:
+          text += page.extract_text()
+          return text
+
 # Show title and description.
 st.title("Leytisha's HW 1 App")
 st.write(
@@ -38,6 +45,9 @@ else:
         uploaded_file = st.file_uploader(
             "Upload a document (.txt or .pdf)", type=("txt", "pdf")
         )
+     
+     except Exception:
+        st.error("Invalid API key. Please try again.", icon="❌")
 
 
     
@@ -88,9 +98,7 @@ else:
              messages=messages,
              stream=True,
          )
-        
-        except Exception:
-        st.error("Invalid API key. Please try again.", icon="❌")
+    
 
-        # Stream the response to the app using `st.write_stream`.
+     # Stream the response to the app using `st.write_stream`.
         st.write_stream(stream)
